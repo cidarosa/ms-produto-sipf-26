@@ -33,4 +33,42 @@ public class ProdutoService {
 
         return new ProdutoDTO(produto);
     }
+
+    @Transactional
+    public ProdutoDTO saveProduto(ProdutoDTO produtoDTO){
+
+        Produto produto = new Produto();
+        copyDtoToPRoduto(produtoDTO, produto);
+        produto = produtoRepository.save(produto);
+        return new ProdutoDTO(produto);
+    }
+
+    @Transactional
+    public ProdutoDTO updateProduto(Long id, ProdutoDTO produtoDTO){
+
+        try {
+            Produto produto = produtoRepository.getReferenceById(id);
+            copyDtoToPRoduto(produtoDTO, produto);
+            produto = produtoRepository.save(produto);
+            return new ProdutoDTO(produto);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Recurso não encontrado. ID: " + id);
+        }
+    }
+
+    public void deleteProdutoById(Long id){
+
+        if(!produtoRepository.existsById(id)){
+            throw new EntityNotFoundException("Recurso não encontrado. ID: " + id);
+        }
+
+        produtoRepository.deleteById(id);
+    }
+
+    private void copyDtoToPRoduto(ProdutoDTO produtoDTO, Produto produto) {
+
+        produto.setNome(produtoDTO.getNome());
+        produto.setDescricao(produtoDTO.getDescricao());
+        produto.setValor(produtoDTO.getValor());
+    }
 }
