@@ -48,7 +48,7 @@ public class CategoriaController {
         return ResponseEntity.created(uri).body(categoriaDTO);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<CategoriaDTO>  updateCategoria(@PathVariable Long id,
                                                          @Valid @RequestBody CategoriaDTO categoriaDTO){
 
@@ -58,7 +58,7 @@ public class CategoriaController {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoria(@PathVariable Long id){
 
         categoriaService.deleteCategoriaById(id);
